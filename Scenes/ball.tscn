@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://do4ecpga1y4o0"]
+
+[ext_resource type="Texture2D" uid="uid://cuwxebxk18rwc" path="res://Assets/Sprites/fancy-ball.png" id="1_k8mwd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_emi84"]
+radius = 10.5873
+
+[node name="Ball" type="RigidBody2D" groups=["ball"]]
+position = Vector2(522, 268)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_k8mwd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(2.17241, 2.12)
+shape = SubResource("CircleShape2D_emi84")

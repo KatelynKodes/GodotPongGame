@@ -1,0 +1,8 @@
+res://Scenes/pong_scene.tscn
+res://Scenes/canvas_layer.tscn
+res://Scripts/ball.cs
+res://Scripts/GameManager.cs
+res://Scripts/goal.cs
+res://Scripts/paddle.cs
+res://Scripts/UIBehavior.cs
+res://Scripts/WinningMessageBehavior.cs

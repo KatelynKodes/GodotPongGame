@@ -1,0 +1,75 @@
+[gd_scene load_steps=10 format=3 uid="uid://b28offk3262a"]
+
+[ext_resource type="PackedScene" uid="uid://cjj7853kpmod5" path="res://Scenes/paddle.tscn" id="1_ca2jw"]
+[ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_oceli"]
+[ext_resource type="PackedScene" uid="uid://do4ecpga1y4o0" path="res://Scenes/ball.tscn" id="2_pdfes"]
+[ext_resource type="Script" path="res://Scripts/ball.cs" id="3_558xy"]
+[ext_resource type="PackedScene" uid="uid://dxq5giw0dqflj" path="res://Scenes/wall.tscn" id="4_6aprr"]
+[ext_resource type="PackedScene" uid="uid://c5bfve2eq6jac" path="res://Scenes/goal.tscn" id="4_idbds"]
+[ext_resource type="Script" path="res://Scripts/goal.cs" id="6_a8h0e"]
+[ext_resource type="PackedScene" uid="uid://cduqm4t86w0yy" path="res://Scenes/canvas_layer.tscn" id="8_qy22r"]
+[ext_resource type="Script" path="res://Scripts/UIBehavior.cs" id="9_acoj8"]
+
+[node name="PongScene" type="Node2D"]
+
+[node name="GameManager" type="Node2D" parent="." node_paths=PackedStringArray("BallObject")]
+script = ExtResource("1_oceli")
+BallObject = NodePath("../Ball")
+TotalRounds = 3
+
+[node name="Paddle" parent="." instance=ExtResource("1_ca2jw")]
+position = Vector2(632, 495)
+playerNum = 1
+
+[node name="Paddle2" parent="." instance=ExtResource("1_ca2jw")]
+position = Vector2(1282, 495)
+rotation = 3.14159
+playerNum = 2
+
+[node name="Ball" parent="." instance=ExtResource("2_pdfes")]
+position = Vector2(904, 480)
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("3_558xy")
+
+[node name="Goal" parent="." node_paths=PackedStringArray("GoalOwner") instance=ExtResource("4_idbds")]
+position = Vector2(454, 478)
+disable_mode = 1
+input_pickable = false
+script = ExtResource("6_a8h0e")
+GoalOwner = NodePath("../Paddle")
+
+[node name="Goal2" parent="." node_paths=PackedStringArray("GoalOwner") instance=ExtResource("4_idbds")]
+position = Vector2(1427, 478)
+disable_mode = 1
+input_pickable = false
+script = ExtResource("6_a8h0e")
+GoalOwner = NodePath("../Paddle2")
+
+[node name="CollisionShape2D" parent="Goal2" index="0"]
+debug_color = Color(0.843137, 0, 0, 0.313726)
+
+[node name="Wall" parent="." instance=ExtResource("4_6aprr")]
+top_level = true
+position = Vector2(959, 659)
+rotation = 3.14159
+
+[node name="Wall2" parent="." instance=ExtResource("4_6aprr")]
+position = Vector2(959, 352)
+
+[node name="CanvasLayer" parent="." node_paths=PackedStringArray("_player1Score", "_player2Score", "_currentRoundNum", "_winningMessagePanel", "_winningMessageLabel") instance=ExtResource("8_qy22r")]
+script = ExtResource("9_acoj8")
+_player1Score = NodePath("ScorePanel/HBoxContainer/Player1Score")
+_player2Score = NodePath("ScorePanel/HBoxContainer/Player2Score")
+_currentRoundNum = NodePath("ScorePanel/HBoxContainer/RoundNumber")
+_winningMessagePanel = NodePath("WinningMessage")
+_winningMessageLabel = NodePath("WinningMessage/VBoxContainer/Winning Message")
+
+[connection signal="body_entered" from="Goal" to="Ball" method="OnGoalEntered"]
+[connection signal="body_entered" from="Goal" to="Goal" method="OnBodyEntered"]
+[connection signal="body_entered" from="Goal2" to="Ball" method="OnGoalEntered"]
+[connection signal="body_entered" from="Goal2" to="Goal2" method="OnBodyEntered"]
+
+[editable path="Goal"]
+[editable path="Goal2"]
+[editable path="CanvasLayer"]
